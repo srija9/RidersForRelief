@@ -2,11 +2,14 @@ import React from 'react';
 import './App.css'
 import Login from './components/authentication/ui/login/login';
 import Register from './components/authentication/ui/register/register'
+import About from './components/about/about'
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
+import Error from './components/error/error';
 
 
 function App() {
@@ -27,8 +30,12 @@ function App() {
           </Route>
 
           <Route path="/about" exact>
-            <Register/>
-          </Route>          
+            <About/>
+          </Route>   
+
+          <Route path="*">
+            <Error/>
+          </Route>       
         </Switch>
       </Router>
     </div>

@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import './loginStyles.css'
 import Logo from '../../../global_ui/logo'
 import InputField from '../../../global_ui/input';
-import { useParams,Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import LoginHeader from './loginHeader';
 
 function login() {
-    const { loginType } = useParams();
+    const loginType  = "rider";
     const [mobile, setMobile] = useState('');
     const [error, setError] = useState('');
     const [isDisabled, setIsDisabled] = useState(false);
