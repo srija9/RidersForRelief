@@ -1,40 +1,52 @@
-import { createContext, useReducer,React } from "react"
-import Requester from "../../../models/requester";
+import { createContext, useReducer, React } from "react"
+// import Requester from "../../../models/requester";
 
-const AuthRegisterReducer = (state,action)=>{
+const AuthRegisterReducer = (state, action) => {
     switch (action.type) {
-        case "REQUEST_OTP":
-            console.log("ehjfhew"+action.payload);
-            return {...state,otp:action.payload,loading:false};
-        case "VERIFY":
-            //TODO
-            return state;
+        case "ISRIDER":
+
+            return { ...state, isRequester: false }
+        case "SETUSER":
+            return {...state ,loading:false,user:action.payload}
+        case "UNLOADING":
+            return { ...state, loading: false }
+        case "VERIFIED":
+
+            return { ...state, loading: false, user: action.payload };
         case "LOADING":
-            return {...state,loading:true}
-            
-        
+            return { ...state, loading: true }
+        case "LOGOUT":
+            return { ...state, user: null }
+        case "SHOWOTP":
+            return { ...state, showOTP: true, loading: false }
+        case "SHOWFORM":
+            return { ...state, showOTP: false, loading: false }
+
     }
 }
 
 const initState = {
     isRequester: true,
-    user:null,
-    loading:false,
-    otp:null
+    user: null,
+    loading: false,
+    showOTP: false
 }
 
 export const AuthContext = createContext()
 
 export const AuthProvider = (prop) => {
-    const [state,dispatch] = useReducer(AuthRegisterReducer,initState)
+    const [state, dispatch] = useReducer(AuthRegisterReducer, initState)
+
+
+
 
     return (
         <AuthContext.Provider
             value={{
-                user:state.user,
-                isRequester:state.isRequester,
-                loading:state.otp,
-                otp:state.otp,
+                user: state.user,
+                isRequester: state.isRequester,
+                loading: state.loading,
+                showOTP: state.showOTP,
                 dispatch
             }}
         >
@@ -42,39 +54,8 @@ export const AuthProvider = (prop) => {
         </AuthContext.Provider>
     )
 }
-/* eslint-disable */
 
-/**
- * 
- * @param {any} dispatch Dispatch object from AuthRegisterContext
- * @param {string} otp OTP
- * @param {string} number number 
- */
-export function verify(dispatch,otp,number) {
-    
-}
-/**
- * 
- * @param {any} dispatch Dispatch object from AuthRegisterContext
- * @param {any} user user model
- */
-export function requestOTP(dispatch,user) {
-    dispatch(
-        {
-            type:"LOADING",
-            payload: null
-        }
-    )
-    if(user instanceof Requester){
-        console.log("req");
-    }else{
-        console.log("rider");
-    }
-    dispatch(
-        {
-            type:"REQUEST_OTP",
-            payload: 1234
-        }
-    )   
-    
-}
+
+
+
+
