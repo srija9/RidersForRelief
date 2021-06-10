@@ -5,8 +5,7 @@ const RegisterScreen = ({isRequester}) => {
 
     
     return (
-        <div>
-            <div style={{ height: 1.5 + 'rem' }} ></div>
+        <div style={{ marginTop:'20px'}}>
             <Logo />
             <Form isRequester={isRequester} />
         </div>

@@ -172,8 +172,7 @@ const Form = ({isRequester}) => {
                         return (
                             <form className="form" onSubmit={submit} >
 
-                                <p style={{ textAlign: "center", fontSize: 2 + 'em' }} >{isRequester?"Requester": "Rider"} Register</p>
-                                <div style={{ height: 1 + 'rem' }} ></div>
+                                <h1 style={{ textAlign: "center"}} >{isRequester?"Requester": "Rider"} Register</h1>
 
                                 <InputField value={details.number} type="number" error={errors.showErrors ? errors.number : ""} onChange={_handleNumber} maxLength='10' placeholder="Enter Phone number" />
 
@@ -182,7 +181,7 @@ const Form = ({isRequester}) => {
                                     { isRequester && <InputField value={details.yearOfBirth} error={errors.showErrors ? errors.yearOfBirth : ""} onChange={_handleYear} type="number" placeholder="Year Of Birth" />}
                                 </div>
                                 {loading?
-                                <Spinner radius="2"/>:<button className="otp-btn" type="submit" >REQUEST OTP</button> }
+                                <Spinner radius="2"/>:<button className="otp-btn" type="submit" >Request OTP</button> }
                                 
                             </form>
                         )

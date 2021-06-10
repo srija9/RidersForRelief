@@ -57,47 +57,48 @@ function Login({isRequester}) {
 
                 {/*Form and Content*/}
                 {
+                    // eslint-disable-next-line no-constant-condition
                     !showOTP ?
                         <div className="content">
-                            <h1 > {isRequester?"Requester":"Rider"} Login</h1>
+                            <h1> {isRequester?"Requester":"Rider"} Login</h1>
 
                             <InputField
+                                style={{ marginTop:'10px'}}
+                                textAlign="center"
+
                                 type="text"
                                 placeholder="Mobile"
                                 error={error ? error : ""}
                                 value={mobile}
                                 maxLength="10"
-
                                 onChange={
                                     (e) => setMobile(e.target.value)
                                 }
                             />
 
-                            {loading ?
-                                <Spinner radius="2" /> : <button
+                            <div style={{ margin:'20px'}}>
+                                {loading ?
+                                    <Spinner radius="2" /> : 
+                                    <button
                                     type="submit"
                                     onClick={(e) => handleLogin(e)}
-
-                                    value="Request OTP"
                                     className="btnStyle"
-                                >Request OTP</button>}
+                                    >Request OTP</button>} 
+                            </div>
+                            
+                                                 
 
+                            
+                                <p className="routetext">Dont have an account?</p>
 
-
-
-
-                            <p className="routetext">Dont have an account?</p>
-
-                            <button
-                                className="btnStyle register"
-                            > 
-                            <Link to={isRequester?"/register/requester":"/register/rider"} >Go to Registration</Link>
-                            </button>
-
+                                <button
+                                className="register"
+                                > 
+                                <Link to={isRequester?"/register/requester":"/register/rider"} >Go to Registration</Link>
+                                </button>                       
                         </div>
                         : <VerifyOTP />
                 }
-
 
 
             </div>

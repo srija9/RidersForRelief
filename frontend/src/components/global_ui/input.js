@@ -1,7 +1,6 @@
 import React from 'react';
 import './input.css'
 
-
 /**
  * 
  * @param {*} props textAlign,size,minLength,value,placeholder,name,type,onChange,error,maxLength are the supported props
@@ -17,10 +16,8 @@ const InputField = ({textAlign,size,minLength,value,placeholder,name,type,onChan
             <label className="label" htmlFor={name}>{placeholder}</label>
             <br />
             {error && <span className="error-msg" >{error}</span>}
-            {error && <div style={{ height: 1 + 'rem' }} ></div>}
-
+            {error && <div style={{ height: 2 + 'rem' }} ></div>}
         </div>
-
 
      );
 }

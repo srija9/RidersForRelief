@@ -45,14 +45,14 @@ const VerifyOTP = () => {
 
     return (
         <div className="otp-container">
-            <span style={{ textAlign: 'center', marginBottom: 0.3 + 'em' }} >You will get an OTP via SMS</span>
+            <span style={{ textAlign: 'center', marginBottom: 0.1 + 'em' }} >You will get an OTP via SMS</span>
             <InputField error={error.showError ? error.error : ""} textAlign="center" placeholder="Enter OTP" type="number" onChange={(e) => validateOTP(e.target.value)} />
             <span>Still haven't received the OTP ? <a onClick={() => console.log("fff")} className="send-otp-btn" >Resend OTP</a> </span>
-            <div style={{ height: 5 + 'rem' }} ></div>
-            {loading ?
+            <div style={{ margin:'0px auto'}}>
+                {loading ?
                 <Spinner radius="2" /> : <button onClick={submit} className="verify-btn" >Verify</button>}
-
-            <p style={{ textAlign: 'center', marginBottom: 0.3 + 'em' }} >Entered wrong details <button onClick={goBack} className="go-back-reg" >Go back</button>  </p>
+            </div>          
+            <p style={{ textAlign: 'center', marginBottom: 0.8 + 'em',marginTop:'0px' }} >Entered wrong details <button onClick={goBack} className="go-back-reg" >Go back</button>  </p>
         </div >
     );
 }

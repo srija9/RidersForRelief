@@ -1,7 +1,6 @@
 
 .form{
     display: grid;
-    margin: 1rem ;
     justify-content: center;
 }
 input{
@@ -12,14 +11,14 @@ input{
 }
 
 .otp-btn{
-  padding: 0.6em;
-  font-weight: bold;
+  padding: 7px 10px;
+  font-size:medium;
   width: fit-content;
   justify-self: center; 
 }
 .sec-row{
     margin-top: 1rem;
-    margin-bottom:  6rem;
+    margin-bottom:  3rem;
     display: grid;
     grid-auto-flow: column;
     gap: 0.5rem;

@@ -17,6 +17,7 @@ const InitialHome = () => {
 
     return (
         <div className="ih-container">
+        
             <TopBanner />
             <div className="contents-ih">
 
@@ -30,7 +31,8 @@ const InitialHome = () => {
                     Login as Rider
                 </button>
             </div>
-            <LeaderBoard />
+
+            <LeaderBoard/>
 
         </div>
     );

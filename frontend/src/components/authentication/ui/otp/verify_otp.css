@@ -1,10 +1,13 @@
 
 .otp-container{
     display: grid;
-    margin-top: 4em;
+    margin-top: 2em;
     justify-content: center;
     gap: 0.5em;
+    height: 55vh;
+    padding: 0px;    
 }
+
 .send-otp-btn, .go-back-reg{
     cursor:pointer;
     padding: 0px;
@@ -14,9 +17,8 @@
     background: transparent;
 }
 
-
 .verify-btn{
-    width: fit-content;
-    justify-self: center;
-    padding: 0.5em 1em
+    font-size: 1em;
+    text-align: center;
+    padding:8px 20px;
 }
