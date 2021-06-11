@@ -7,8 +7,7 @@ import './initial-home.css'
 import { useHistory } from "react-router";
 const InitialHome = () => {
     const routes = useHistory()
-    const goToLoginRider= ()=>{
-       
+    const goToLoginRider= ()=>{       
         routes.push('/login/rider')
     }
     const goToLoginRequester= ()=>{

@@ -1,21 +1,22 @@
 import React from 'react';
 import './App.css'
-import { AuthProvider } from './components/context/auth/authProvider';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
-import About from './components/about/about'
-import Error from './components/error/error'
+// import { AuthProvider } from './components/context/auth/authProvider';
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route,
+// } from "react-router-dom";
+// import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
+// import About from './components/about/about'
+// import Error from './components/error/error'
+import Requester from './components/home/Requester/RequesterHomeScreen';
 
 function App() {
   return (
     <div className="App">
-      <Router>
+      {/* <Router>
         <Switch>          
-          <Route path="/" exact>
+          <Route path="/" >
             
             <AuthProvider>
             <InitialHomeRouting />
@@ -29,8 +30,8 @@ function App() {
             <Error/>
           </Route>
         </Switch>
-      </Router>
-
+      </Router> */}
+      <Requester/>
       
     </div>
   );
