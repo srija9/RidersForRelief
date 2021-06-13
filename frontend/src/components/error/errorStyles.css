@@ -1,0 +1,21 @@
+.errorPage{
+    background: linear-gradient(90deg, white 21px, transparent 1%) center, linear-gradient(white 21px, transparent 1%) center, grey;
+    background-size: 22px 22px;
+    min-width: 100%;
+    min-height: 100%;
+}
+.error{
+    display: grid;
+    justify-content: center; 
+    align-items: center;
+    justify-items: center; 
+}
+
+.icon{
+    margin:0px 10px;
+}
+
+.errImg{
+    margin: 0px;    
+    width: auto;  
+}

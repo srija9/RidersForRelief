@@ -1,21 +1,38 @@
 import React from 'react';
 import './App.css'
-// import Login from './components/authentication/ui/login/login';
-// import VerifyOTP from './components/authentication/ui/login/verifyotp.js';
-// import RegisterScreen from './components/authentication/ui/register/register'
-
-// import InputField from './components/global_ui/input';
+// import { AuthProvider } from './components/context/auth/authProvider';
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route,
+// } from "react-router-dom";
+// import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
+// import About from './components/about/about'
+// import Error from './components/error/error'
+import Requester from './components/home/Requester/RequesterHomeScreen';
 
 function App() {
   return (
     <div className="App">
-    {/* <Login/> */}
-    {/* <Login/> */}
-    {/* <VerifyOTP/> */}
+      {/* <Router>
+        <Switch>          
+          <Route path="/" >
+            
+            <AuthProvider>
+            <InitialHomeRouting />
+            </AuthProvider>
+          </Route>
+          <Route path="/about" exact>
+            <About/>
+          </Route>
 
-      {/* <RegisterScreen/> */}
-      {/* <InputField type="number" error={"Error"} maxLength='10' placeholder="Enter Phone number" /> */}
-
+          <Route path="*" >
+            <Error/>
+          </Route>
+        </Switch>
+      </Router> */}
+      <Requester/>
+      
     </div>
   );
 }
