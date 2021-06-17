@@ -9,7 +9,8 @@ import './App.css'
 // import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
 // import About from './components/about/about'
 // import Error from './components/error/error'
-import Requester from './components/home/Requester/RequesterHomeScreen';
+//import Requester from './components/home/Requester/RequesterHomeScreen';
+import UploadImages from './components/requester/new_request/upload_images'
 
 function App() {
   return (
@@ -31,8 +32,8 @@ function App() {
           </Route>
         </Switch>
       </Router> */}
-      <Requester/>
-      
+     {/* <Requester/> */}
+      <UploadImages/>
     </div>
   );
 }
