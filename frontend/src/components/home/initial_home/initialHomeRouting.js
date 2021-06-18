@@ -13,6 +13,7 @@ import RequesterHomeRoutes from "../requester/routes";
 import RiderHomeRoutes from "../rider/routes";
 import InitialHome from "./initial_home";
 
+
 const InitialHomeRouting = () => {
 
     const { dispatch, isAuthenticated } = useContext(AuthContext)
@@ -28,13 +29,14 @@ const InitialHomeRouting = () => {
                 payload: { token, user }
             })
             route.push(`/home/${user.isRequester ? "requester" : "rider"}`)
-
-        }
+          
+        } 
 
     }, [])
 
     return (
         <Switch>
+            
             <ProtectedRoute isAuthenticated={isAuthenticated} path="/home/requester">
                 <RequesterHomeRoutes />
             </ProtectedRoute>

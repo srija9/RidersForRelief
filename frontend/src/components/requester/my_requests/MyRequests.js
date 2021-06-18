@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import MyRequestsListItem from './MyRequestsListItem'
 import styles from "./MyRequests.module.css";
 import Navbar from '../../global_ui/nav';
-import axios from 'axios';
+//import axios from 'axios';
 import { AuthContext } from '../../context/auth/authProvider';
 
 const MyRequests = () => {
@@ -17,10 +17,11 @@ const MyRequests = () => {
                     'authorization': 'Bearer ' + token
                 }
             }
-            axios.get('http://localhost:8000/requester/myRequests', options)
-                .then(response => {
-                    console.log(response.data);
-                })
+            options
+            // axios.get('http://localhost:8000/requester/myRequests', options)
+            //     .then(response => {
+            //         console.log(response.data);
+            //     })
         }
     )
 
