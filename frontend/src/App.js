@@ -17,13 +17,17 @@ function App() {
       <AuthProvider>
         <Router>
           <Switch>
+
           
           <Route exact path="/" component={InitialHomeRouting}></Route>
           <Route exact path="/about" component={PlacedRequest}></Route>
-          <Route exact path="/upload" component={Upload}></Route>
+          <Route exact path="/uploadthis" component={Upload}></Route>
 
           {/* <Route path="/about">             
           
+
+            <Route path="/about">
+
               <PlacedRequest />
             </Route> */}
             {/* <Route path="/">
