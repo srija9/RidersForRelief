@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require("axios");
 const router  = express.Router();
 const requestModel = require('../../models/request');
 const requester = require('../../models/requesters')
@@ -51,24 +52,50 @@ const storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
-router.post('/newRequest/general',upload.any('images'),(req,res)=>{
-    let currentReqTime = Date.now();
-    console.log(currentReqTime);
-	let requesterId;
-    requester.findOne({phoneNumber : req.user.phoneNumber})
+router.post('/new',upload.any('images'),(req,res)=>{
+
+	const {dropLocationCoordinates} = req.body;
+	const dropLocationAddress = JSON.parse(req.body.dropLocationAddress);
+
+	new Promise((resolve, reject)=>{
+		
+		if(!dropLocationCoordinates || dropLocationCoordinates.length == 0)
+		{
+			const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${dropLocationAddress.area},%20${dropLocationAddress.city}&key=${process.env.GMAPS_API_KEY}`;
+
+			console.log(url);
+			axios.get(url)
+			.then(response=>{
+				const coordinates = response.data.results[0].geometry.location;
+				resolve([coordinates.lng, coordinates.lat]);
+			})
+			.catch(error=>{
+				reject(error);
+				console.log(error);
+			})
+		}
+		else
+		{
+			resolve(dropLocationCoordinates);
+		}
+	})
+	.then(roughCoordinates=>{
+		req.body.roughCoordinates = roughCoordinates;
+		return requester.findOne({phoneNumber : req.user.phoneNumber});
+	})
     .then(doc => {
         if(doc != null)
         {
             // lastReqTime = doc.lastRequestTime;
             // console.log(lastRequestTime);
             // return lastRequestTime;
-            requesterId = doc._id;
+            req.body.requesterId = doc._id;
         }
         return 16273927;
     })
     .then(value =>{
         let paths = [];
-        // if(currentReqTime - value <= process.env.REQUEST_INTERVAL){
+        // if(Date.now() - value <= process.env.REQUEST_INTERVAL){
         //     throw { status : "failure",message : "Please wait some time to place a new Request "};
         // }
         if (req.files){
@@ -79,25 +106,25 @@ router.post('/newRequest/general',upload.any('images'),(req,res)=>{
             })
         }
         console.log(paths)
-        return paths 
+        return paths;
     })
     .then(paths =>{
-        console.log(req.body);
+        
         let newRequest = new requestModel({
-			requesterID: requesterId,
+			requesterID: req.body.requesterId,
             requestNumber : Date.now() + Math.floor(Math.random()*100),
             requesterCovidStatus : req.body.requesterCovidStatus,
             noContactDelivery : req.body.noContactDelivery, // Added no contact delivery
-            requestStatus : req.body.requestStatus,
+            requestStatus : "PENDING",
             requestType : 'GENERAL',
             itemsListImages : paths,
             itemsListList : JSON.parse(req.body.itemsListList),
             itemCategories : req.body.itemCategories,
-            Remarks: req.body.Remarks,
-			dropLocationCoordinates: {coordinates : req.body.dropLocationCoordinates},
-            dropLocationAddress: req.body.dropLocationAddress
+            remarks: req.body.remarks,
+			dropLocationCoordinates: {coordinates : JSON.parse(req.body.dropLocationCoordinates)},
+            dropLocationAddress: JSON.parse(req.body.dropLocationAddress),
+			roughLocationCoordinates: {coordinates: req.body.roughCoordinates}
         }); 
-        //console.log("YAY!")
         return newRequest.save()    
     })
     .then(result =>{
@@ -105,7 +132,7 @@ router.post('/newRequest/general',upload.any('images'),(req,res)=>{
     })
     .catch(err =>{
 			console.log(err);
-            return res.json()
+            return res.json({status: "failure", message: error});
     })    
 })
 // --------------------------
