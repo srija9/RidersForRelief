@@ -7,7 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
-import UploadImages from './components/requester/new_request/upload_images';
+//import UploadImages from './components/rider/current_request/riderImginput/riderimageupload';
 function App() {
 
   return (
@@ -16,8 +16,13 @@ function App() {
         <Router>
           <Switch>
             <Route path="/temp">
-              {/* TestYourScreensHere */}
-              <UploadImages/>
+              TestYourScreensHere
+              {/* <UploadImages 
+              ImgHeader="Upload Images: "
+              ImgText="Tap to add"
+              Name="Bills"
+              Callback={callback}
+                /> */}
             </Route>
             <Route path="/">
               <InitialHomeRouting />
