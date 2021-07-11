@@ -156,23 +156,25 @@ const uploadImages = () => {
           <div>
             <label className={styles.up_check_label}>
               MEDICINES
-              <input type="checkbox" name="MEDICINES" onChange={OnCheckBox} />
+              <input type="checkbox" name="MEDICINES" onChange={OnCheckBox} checked={categories.MEDICINES} />
               <span className={`${styles.up_check} ${styles.check_1}`}></span>
             </label>
           </div>
           <div>
             <label className={styles.up_check_label}>
               GROCERIES
-              <input type="checkbox" name="GROCERIES" onChange={OnCheckBox} />
+              <input type="checkbox" name="GROCERIES" onChange={OnCheckBox} checked={categories.GROCERIES} />
               <span className={`${styles.up_check} ${styles.check_2}`}></span>
             </label>
           </div>
           <div>
             <label className={styles.up_check_label}>
-              MISC.
-              <input type="checkbox" name="MISC" onChange={OnCheckBox} />
+              MISC
+              <input type="checkbox" name="MISC" onChange={OnCheckBox} checked={categories.MISC} />
               <span className={`${styles.up_check} ${styles.check_3}`}></span>
+              
             </label>
+            
           </div>
         </div>
 
