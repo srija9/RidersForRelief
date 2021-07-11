@@ -1,6 +1,6 @@
 import React from 'react';
 import imageCompression from 'browser-image-compression';
-import styles from "./riderimagestyles.module.css";
+import styles from "./imageuploadglobal.module.css";
 
 const riderimages = ({ImgHeader,ImgText,Name,Callback})=>{
 
