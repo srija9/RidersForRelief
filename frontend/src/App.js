@@ -7,7 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
-//import UploadImages from './components/rider/current_request/riderImginput/riderimageupload';
+//import UploadImages from './components/global_ui/Imginput/imageuploadglobal';
 function App() {
 
   return (
