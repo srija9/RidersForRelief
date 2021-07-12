@@ -7,7 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import InitialHomeRouting from './components/home/initial_home/initialHomeRouting';
-//import UploadImages from './components/global_ui/Imginput/imageuploadglobal';
+//import UploadImages from './components/global_ui/Imginput/ImgInput';
 function App() {
 
   return (
@@ -21,7 +21,7 @@ function App() {
               ImgHeader="Upload Images: "
               ImgText="Tap to add"
               Name="Bills"
-              Callback={callback}
+              Key="BillS"
                 /> */}
             </Route>
             <Route path="/">
