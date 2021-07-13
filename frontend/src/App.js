@@ -10,6 +10,7 @@ import InitialHomeRouting from './components/home/initial_home/initialHomeRoutin
 //import UploadImages from './components/global_ui/Imginput/ImgInput';
 function App() {
 
+
   return (
     <div className="App">
       <AuthProvider>
@@ -18,10 +19,10 @@ function App() {
             <Route path="/temp">
               TestYourScreensHere
               {/* <UploadImages 
-              ImgHeader="Upload Images: "
-              ImgText="Tap to add"
-              Name="Bills"
-              Key="BillS"
+              imgHeader="Upload Images: "
+              imgText="Tap to add"
+              name="Bills"
+              setImages={setUrl}              
                 /> */}
             </Route>
             <Route path="/">

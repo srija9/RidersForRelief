@@ -1,11 +1,10 @@
 import React from "react";
 import imageCompression from "browser-image-compression";
-import {useSessionStorageState} from "../../../utils/useLocalStorageState";
 import styles from "./ImgInput.module.css";
 
-const ImgInput = ({ImgHeader,ImgText,Name,Key})=>{
+const ImgInput = ({imgHeader,imgText,name,setImages})=>{
 
-  const [Image, setImage] = useSessionStorageState(`${Key}`, []);
+  
   
  async function onInputChange(e){
 
@@ -18,28 +17,26 @@ const ImgInput = ({ImgHeader,ImgText,Name,Key})=>{
   const compressed = await imageCompression(imageFile,options);
   let reader = new FileReader()
   reader.onload = function(){    
-    setImage((Image)=>[...Image, reader.result])  
+    setImages((Image)=>[...Image, reader.result])  
   }
   reader.readAsDataURL(compressed);
   document.getElementById("file").value = null;
 
   }
 
-  for(let i=0;i<Image.length;i++) {
-    console.log(Image[i]);
-  }
+  
 
     return(
         <div className={styles.container}>
 
         <label htmlFor="file" className={styles.labels}>
-          <p className={styles.up_msg}>{ImgHeader}</p>
+          <p className={styles.up_msg}>{imgHeader}</p>
           <div className={styles.form_group}>
-            <p>{ImgText}</p>
+            <p>{imgText}</p>
             <input
               type="file"
               id="file"
-              name={Name}
+              name={name}
               onChange={onInputChange}
               multiple
             />
