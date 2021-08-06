@@ -1,4 +1,5 @@
 const riders = require("../models/riders");
+const requesters = require("../models/requesters")
 const requests = require("../models/request")
 const { sendResponse, sendError } = require("./common");
 
@@ -34,8 +35,7 @@ async function makeDelivery(phoneNumber, requestID) {
 	return new Promise((resolve, reject) => {
 
 		let riderDoc;
-
-		riders.firesultndOne({ phoneNumber: phoneNumber })
+		riders.findOne({ phoneNumber: phoneNumber })
 			.then(doc => {
 				if (!doc)
 					resolve(sendError("Rider not found"));
@@ -43,10 +43,10 @@ async function makeDelivery(phoneNumber, requestID) {
 					riderID = doc._id;
 					riderDoc = doc;
 					if (doc.currentStatus != "AVAILABLE")
-						resolve(sendError("Rider status is invalid, cannot assign this request to rider"));
+						resolve(sendError(`Rider status is ${doc.currentStatus}, cannot assign this request to rider`));
 
 					else
-						return requests.findOne({ requestID: requestID });
+						return requests.findOne({ requestNumber: requestID });
 				}
 			})
 			.then(doc => {
@@ -60,7 +60,7 @@ async function makeDelivery(phoneNumber, requestID) {
 					doc.requestStatus = "UNDER DELIVERY";
 					doc.riderID = riderID;
 					//update rider status
-					riderDoc.currentRequest = doc.requestID;
+					riderDoc.currentRequest = doc._id;
 					riderDoc.currentRequestType = doc.requestType;
 					riderDoc.currentStatus = "BUSY";
 					return doc.save();
@@ -80,22 +80,23 @@ async function makeDelivery(phoneNumber, requestID) {
 }
 
 
-async function finishDelivery(phoneNumber,fileData)
-{
-	return new Promise((resolve, reject)=>{
+async function finishDelivery(phoneNumber, fileData) {
+
+
+	return new Promise((resolve, reject) => {
 		let billsImagePaths = [];
 		let rideImagePaths = [];
-        if(fileData){
-			for ( var key in fileData){
-				fileData[key].map(data=>{
+		if (fileData) {
+			for (var key in fileData) {
+				fileData[key].map(data => {
 					var path = data.path;
 					var path2 = "data/images";
-					if (value.fieldname === 'billsImages'){
-                    	billsImagePaths.push(path.slice(path.search(path2) + path2.length));
-                	}
-          else{
-                rideImagePaths.push(path.slice(path.search(path2) + path2.length));
-          }
+					if (value.fieldname === 'billsImages') {
+						billsImagePaths.push(path.slice(path.search(path2) + path2.length));
+					}
+					else {
+						rideImagePaths.push(path.slice(path.search(path2) + path2.length));
+					}
 				})
 			}
 		}
@@ -107,7 +108,7 @@ async function finishDelivery(phoneNumber,fileData)
 					resolve(sendError("Rider is not BUSY, cannot finish delivery!"));
 				else {
 					riderDoc = doc;
-					return request.findOne({ requestID: riderDoc.currentRequest });
+					return requests.findOne({ _id: riderDoc.currentRequest });
 				}
 			})
 			.then((doc) => {
@@ -137,43 +138,23 @@ async function finishDelivery(phoneNumber,fileData)
 }
 
 async function cancelDelivery(phoneNumber) {
-	return new Promise((resolve, reject) => {
+	try {
+		const rider = await riders.findOne({ phoneNumber: phoneNumber })
+		const request = await requests.findOne({ _id: rider.currentRequest })
+		if (!request) {
+			return sendError('No such request found')
+		}
+		request.requestStatus = "PENDING"
+		rider.currentStatus = "AVAILABLE"
+		rider.currentRequest = null
+		await rider.save()
+		await request.save()
+		return sendResponse('Delivery cancelled successfully')
+	} catch (error) {
+		console.log(error);
+		return sendError('Internal Server Error')
+	}
 
-		let riderDoc;
-
-		riders.findOne({ phoneNumber: phoneNumber })
-			.then((doc) => {
-				if (!doc)
-					resolve(sendError("No such rider found"));
-				else if (doc.currentStatus != "BUSY")
-					resolve(sendError("Rider is not BUSY, cannot cancel delivery"))
-				else {
-					riderDoc = doc;
-					return request.findOne({ requestID: riderDoc.currentRequest });
-				}
-			})
-			.then((doc) => {
-				if (!doc)
-					resolve(sendError("Cannot find the request to be cancelled"));
-				else {
-					requestDoc = doc;
-					requestDoc.requestStatus = "PENDING";
-					riderDoc.currentStatus = "AVAILABLE";
-					riderDoc.currentRequest = null;
-					return requestDoc.save();
-				}
-			})
-			.then(() => {
-				return riderDoc.save();
-			})
-			.then(() => {
-				resolve(sendResponse("Cancel Delivery Successful"));
-			})
-			.catch(error => {
-				console.log(error);
-				return res.json(error);
-			})
-	})
 }
 
 async function getRequestDetails(requestID) {
@@ -181,14 +162,20 @@ async function getRequestDetails(requestID) {
 		requests.findOne({ requestNumber: requestID })
 			.populate('requesterID')
 			.then((temp) => {
-				let doc = temp.toObject();
-				const requesterPhone = temp.requesterID.phoneNumber;
-				doc.requesterID = undefined;
-				doc.requesterPhoneNumber = requesterPhone;
-				if (!doc)
+				if (!temp) {
 					resolve(sendError("No such request found!"));
-				else
-					resolve(sendResponse(doc));
+				}
+				else {
+					let doc = temp.toObject();
+					const requesterPhone = temp.requesterID.phoneNumber;
+					doc.requesterID = undefined;
+					doc.requesterPhoneNumber = requesterPhone;
+					if (!doc)
+						resolve(sendError("No such request found!"));
+					else
+						resolve(sendResponse(doc));
+				}
+
 			})
 			.catch(error => {
 				console.log(error);
@@ -202,15 +189,69 @@ async function getMyDeliveries(phoneNumber) {
 
 		riders.findOne({ phoneNumber: phoneNumber })
 			.then((riderDoc) => {
-				return request.find({ requestStatus: "DELIVERED", riderID: riderDoc._id })
+				return requests.find({ requestStatus: "DELIVERED", riderID: riderDoc._id })
 			})
 			.then(docs => {
-				resolve(sendResponse(docs.data.rows));
+				resolve(sendResponse(docs));
 			})
 			.catch(error => {
 				console.log(error);
 				resolve(sendError("Internal Server Error"));
 			})
+	})
+}
+
+
+async function fetchRequests(phoneNumber, longitude, latitude, maxDistance) {
+	return new Promise((resolve, reject) => {
+		requests.find({
+			roughLocationCoordinates: {
+				$near: {
+					$geometry: { type: "Point", coordinates: [longitude, latitude] },
+					$maxDistance: maxDistance
+				}
+			}, requestStatus: "PENDING"
+		})
+			.then((doc) => {
+				resolve(sendResponse(doc));
+				//	console.log(doc.length)
+			})
+			.catch(error => {
+				console.log(error);
+				resolve(sendError("Internal Server Error"));
+			})
+	})
+}
+
+async function getCurrentRequest(phoneNumber) {
+
+	return new Promise(async (resolve, reject) => {
+		riders.findOne({ phoneNumber: phoneNumber })
+			.populate('currentRequest')
+			.then(async doc => {
+				if (!doc)
+					resolve(sendError("No such rider found"));
+				else {
+
+					const requester = await requesters.findOne({ _id: doc.currentRequest.requesterID })
+					console.log(requester)
+					console.log(doc.currentRequest);
+					if (!doc.currentRequest)
+						resolve(sendError("No current request found"));
+					else {
+						const res = doc.currentRequest.toObject();
+						res.name = requester.name;
+						res.phoneNumber = requester.phoneNumber;
+						console.log(res);
+						resolve(sendResponse(res));
+					}
+				}
+			})
+			.catch(error => {
+				console.log(error);
+				resolve(sendError("Internal Server Error"));
+			})
+
 	})
 }
 
@@ -221,5 +262,7 @@ module.exports = {
 	finishDelivery,
 	cancelDelivery,
 	getRequestDetails,
-	getMyDeliveries
+	getMyDeliveries,
+	getCurrentRequest,
+	fetchRequests
 };

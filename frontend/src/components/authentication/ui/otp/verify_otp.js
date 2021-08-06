@@ -41,7 +41,6 @@ const VerifyOTP = () => {
           
 
           route.replace(`/home/${isRequester ? "requester" : "rider"}`);
-          window.location.reload();
         } else {
           toggle(true);
         }
@@ -87,41 +86,44 @@ const VerifyOTP = () => {
   };
 
   return (
-    <div className="otp-container">
-      <Logo></Logo>
+    <form className="otp-container">
+      <Logo/>
       <Dialog  isShowing={isShowing} onOK={()=>{toggle(false)}} msg={error} />
       <p style={{ textAlign: "center", marginBottom: 0.3 + "em" }}  >
         You will get an OTP via SMS
       </p>
-      <InputField
-        error={errorMsg.showError ? errorMsg.error : ""}
-        textAlign="center"
-        placeholder="Enter OTP"
-        type="number"
-        onChange={(e) => validateOTP(e.target.value)}
-      />
+      <div>
+        <InputField
+        
+          error={errorMsg.showError ? errorMsg.error : ""}
+          textAlign="center"
+          placeholder="Enter OTP"
+          type="number"
+          onChange={(e) => validateOTP(e.target.value)}
+        />
+      </div>
       <p style={{ textAlign: "center"}} >
         Still haven't received the OTP ?{" "}
         <a onClick={resendOTP} className="send-otp-btn">
           Resend OTP
         </a>{" "}
       </p>
-      <div style={{ height: 5 + "rem" }}></div>
+      <div style={{ height: 3 + "rem" }}></div>
       {loading ? (
         <Spinner radius="2" />
       ) : (
-        <button onClick={submit} className="verify-btn">
+        <button type="submit" onClick={submit} className="verify-btn">
           Verify
         </button>
       )}
 
-      <p style={{ textAlign: "center", marginBottom: 0.3 + "em" }}>
+      <p style={{ textAlign: "center",marginTop:'2rem', marginBottom: 0.3 + "em" }}>
         Entered wrong details{" "}
         <button onClick={goBack} className="go-back-reg">
           Go back
         </button>{" "}
       </p>
-    </div>
+    </form>
   );
 };
 
