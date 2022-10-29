@@ -77,12 +77,13 @@ const schema = new mongoose.Schema({
 	// [ longitude, latitude ]
 	roughLocationCoordinates: {
 		type: { type: String, default: "Point" },
-		coordinates: [Number]
+		coordinates: {type: Array } 
 	},
 
 	pickupLocationCoordinates: {
 		type: { type: String, default: "Point" },
-		coordinates: [Number]
+		required:false,
+		coordinates:{type: Array}
 	},
 
 	//Pickup location address MUST be there if the request is P&D and pickup coordinates have not been specified.
@@ -95,7 +96,7 @@ const schema = new mongoose.Schema({
 
 	dropLocationCoordinates: {
 		type: { type: String, default: "Point" },
-		coordinates: [Number]
+		coordinates:{type: Array}
 	},
 
 	//drop location address MUST be there if the drop coordinates have not been specified.
@@ -104,11 +105,16 @@ const schema = new mongoose.Schema({
 		area: String,
 		city: String,
 		default: {}
-	}
+	},
+	modeOfTransport:{
+			type: String,
+			enum: ['Bicycle', 'Motorbike', 'Car'],
+		}
 })
 
 schema.index({ 'roughLocationCoordinates': '2dsphere' });
 schema.index({ 'pickupLocationCoordinates': '2dsphere' });
+schema.index({ 'dropLocationCoordinates': '2dsphere' });
 
 const requests = mongoose.model("requests", schema);
 module.exports = requests;

@@ -175,20 +175,23 @@ function EnterItemsForm() {
             error={err.second}
             onChange={(e) => handleInputChange(e)}
           />
-
+          
           <button
             style={{
+              marginTop:'20px',
               marginRight: "2%",
-              backgroundColor: "green",
+              backgroundColor: "var(--secondary)",
               color: "white",
               fontWeight: "bold",
+              padding:'10px 20px',
+              
             }}
             type="button"
             className={restyles.btn}
             onClick={(e) => handleAddClick(e)}
             value="Add"
           >
-            Add
+            ADD
           </button>
             
           {inputList.map((x, index) => {
@@ -277,7 +280,7 @@ function EnterItemsForm() {
           <button
             type="button"
             onClick={() => history.replace('/')}
-            style={{ backgroundColor: "red", color: "white" }}
+            style={{ backgroundColor:"#e5e5e5", color: "darkslategrey" }}
             className={restyles.btn}
           >
             Cancel
@@ -285,7 +288,7 @@ function EnterItemsForm() {
 
           <button
             type="button"
-            style={{ backgroundColor: "green", color: "white" }}
+            style={{ backgroundColor: "var(--secondary)", color: "white" }}
             className={restyles.btn}
             onClick={onProceed}
           >

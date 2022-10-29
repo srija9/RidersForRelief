@@ -11,6 +11,7 @@ import styles from "./imageViewer.module.css";
  * @returns Custom img viewer
  */
 const ImageViewer = ({ viewerData, setViewerData, alt }) => {
+  console.log(viewerData);
   return viewerData.show
     ? ReactDOM.createPortal(
         <div className={styles.viewer}>
@@ -19,7 +20,7 @@ const ImageViewer = ({ viewerData, setViewerData, alt }) => {
                 <a rel="noreferrer" href={viewerData.src} target='_blank' download >
             <i
               onClick={() => {
-                setViewerData({ show: false, src: "",name:'' });
+                setViewerData({ show: false, src: "" });
               }}
               className="fas fa-download"
               ></i>
@@ -31,7 +32,7 @@ const ImageViewer = ({ viewerData, setViewerData, alt }) => {
               className="fas fa-times-circle"
             ></i>
             </div>
-            <img src={viewerData.src} alt={alt} />
+            <img src={process.env.REACT_APP_URL+ viewerData.src} alt={alt} />
           </div>
         </div>,
         document.body

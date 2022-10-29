@@ -16,6 +16,12 @@ const MyRequests = () => {
   const { token } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
 
+  function comparisonByDate(dateA, dateB) {
+    var c = new Date(dateA.date.split("/")[1]+"/"+dateA.date.split("/")[0]+"/"+dateA.date.split("/")[2]);
+    var d = new Date(dateB.date.split("/")[1]+"/"+dateB.date.split("/")[0]+"/"+dateB.date.split("/")[2]);
+    return d-c;
+  }
+
 
   useEffect(() => {
     console.log(token);
@@ -31,14 +37,10 @@ const MyRequests = () => {
       (response) => {
         //Tempo
         if (response.data.message.length === 0) {
-          setRequests([request])
+          setRequests([])
         }
         else
           setRequests(response.data.message);
-
-        console.log(allRequests)
-        console.log(response.data);
-
         setLoading(false);
       },
       (error) => {
@@ -69,20 +71,17 @@ const MyRequests = () => {
         backStyle={{ color: "white" }}
         title="My Requests"
         titleStyle={{ color: "white" }}
-        style={{ backgroundColor: "#79CBC5", marginBottom: "10px" }}
+        style={{ marginBottom: "10px" }}
       />
       {
-        allRequests.length === 0 ? (
-
+        allRequests.length<1 ? (
           <h3 className={styles.noRequests}> You haven&apos;t made any requests</h3>
         ) :
           (
             <div className={styles.myRequestsList}>
-              {allRequests.map((req) => {
+              {allRequests.sort(comparisonByDate).map((req) => {
                 return <MyRequestsListItem key={req.requestNumber} data={req} />
               })}
-
-
             </div>
           )
       }
@@ -93,56 +92,56 @@ const MyRequests = () => {
 export default MyRequests;
 
 
-const request = {
-  requestNumber: "8628290",
-  requesterID: "8628290",
-  requestStatus: "PENDING",
-  requestType: "P&D",
-  itemsListImages: [
-    // "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-  ],
-  riderID: {
-    name: "Someone"
-  },
-  itemsListList: [
-    {
-      itemName: "Tomato",
-      quantity: "2kg",
-    },
-    {
-      itemName: "Tomato",
-      quantity: "2kg",
-    },
-  ],
-  itemCategories: ["MEDICINES", "MISC"],
-  remarks: "Something here",
-  billsImageList: [
-    // "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-  ],
-  rideImages: [
-    // "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-  ],
-  pickupLocationAddress:
-  {
-    addressLine: "Some place far away",
-    area: "",
-    city: "Unknown",
-    pincode: "XXXXXX",
-  }
-  ,
-  dropLocationAddress: null
-  // {
-  //   addressLine: "Some place far away",
-  //   area: "",
-  //   city: "Unknown",
-  //   pincode: "XXXXXX",
-  // }
-  ,
+// const request = {
+//   requestNumber: "8628290",
+//   requesterID: "8628290",
+//   requestStatus: "PENDING",
+//   requestType: "P&D",
+//   itemsListImages: [
+//     // "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+//   ],
+//   riderID: {
+//     name: "Someone"
+//   },
+//   itemsListList: [
+//     {
+//       itemName: "Tomato",
+//       quantity: "2kg",
+//     },
+//     {
+//       itemName: "Tomato",
+//       quantity: "2kg",
+//     },
+//   ],
+//   itemCategories: ["MEDICINES", "MISC"],
+//   remarks: "Something here",
+//   billsImageList: [
+//     // "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+//   ],
+//   rideImages: [
+//     // "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+//   ],
+//   pickupLocationAddress:
+//   {
+//     addressLine: "Some place far away",
+//     area: "",
+//     city: "Unknown",
+//     pincode: "XXXXXX",
+//   }
+//   ,
+//   dropLocationAddress: null
+//   // {
+//   //   addressLine: "Some place far away",
+//   //   area: "",
+//   //   city: "Unknown",
+//   //   pincode: "XXXXXX",
+//   // }
+//   ,
 
-  pickupLocationCoordinates: {
-    coordinates: [17.9, 78.6]
-  },
-  dropLocationCoordinates: {
-    coordinates: [17.9, 78.6]
-  }
-}
+//   pickupLocationCoordinates: {
+//     coordinates: [17.9, 78.6]
+//   },
+//   dropLocationCoordinates: {
+//     coordinates: [17.9, 78.6]
+//   }
+// }

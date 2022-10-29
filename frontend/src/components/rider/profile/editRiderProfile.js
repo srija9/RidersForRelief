@@ -129,7 +129,7 @@ const EditRiderProfile = () => {
           msg={"Profile Updated Successfully"}
         />
 
-        <Navbar back={"/my_profile"} title="My Account" />
+        <Navbar back={"/my_profile"} title="Edit Profile" />
         {data.profileURL ? (
           <img src={data.profileURL} className={styles.profileImage}></img>
         ) : (
@@ -151,7 +151,8 @@ const EditRiderProfile = () => {
             maxLength="10"
             placeholder="Mobile Number"
             error={phoneNumberError}
-            onChange={(e) => validatePhoneNumber(e)}
+            // onChange={(e) => validatePhoneNumber(e)}
+            // isDisabled={true}
           />
 
 

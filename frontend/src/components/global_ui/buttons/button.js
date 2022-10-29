@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 
 function Button({
@@ -7,13 +8,14 @@ function Button({
     text,fontSize,
     customClass,
     borderColor,borderWidth,
-    onClick
+    onClick,
+    borderRadius
     }) {
     return (
         <button
         onClick={onClick}
         style={{
-            background:bgColor,
+            background:'var(--primary)',
             color:color,
             margin:`${marginTB} ${marginLR}`,
             padding:`${paddingTB} ${paddingLR}`,
@@ -24,7 +26,7 @@ function Button({
             fontSize:fontSize,
             boxShadow:isElevated?'0 1px 2px 0 rgba(0, 0, 0, 0.26)':'none',
             transition:'ease-in',
-            borderRadius:isRounded?'4px':'0px',
+            borderRadius:isRounded?(borderRadius?borderRadius:'4px'):'0px',
             border:`${borderWidth?borderWidth:'none'} solid ${borderColor}`
 
         }}

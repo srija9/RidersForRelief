@@ -13,12 +13,12 @@ import RequestImages from "./request_images";
 const PlacedRequest = () => {
   const history = useHistory();
   const { token } = useContext(AuthContext);
-  console.log(token);
   const {
     location: {
       state: { request },
     },
   } = history;
+  console.log(request);
   const [dialogData, setDialogData] = useState({ show: false, msg: "" });
   const [cancel, setCancel] = useState(false);
   const statusStyle = {
@@ -40,6 +40,7 @@ const PlacedRequest = () => {
         onCancel={() => setCancel(false)}
         routeRedirect="my_requests"
         onOK={async () => {
+          console.log("-------------------------");
           const res = await cancelConfirmRequest(
             token,
             request.requestNumber,
@@ -53,44 +54,59 @@ const PlacedRequest = () => {
               setDialogData({ ...dialogData, msg: "Cancelled successfully" });
             else
               setDialogData({ ...dialogData, msg: "Confirmed successfully" });
-            history.replace("my_requests");
+            history.replace("/my_requests/feedback");
           }
         }}
       />
       <Navbar back="my_requests" title="Order Details" />
       <div className={styles.container}>
-        <p>Request #{request.requestNumber}</p>
+        <p style={{fontSize:'30px'}}>Request #{request.requestNumber}</p>
         <span>
           Order Status:{" "}
           <span style={statusStyle}> {request.requestStatus}</span>
         </span>
 
-        {request.requestStatus[0] === "D" && (
+        {request.requestStatus === "DELIVERED" && (
           <p>Order delivered by {request.riderID.name}</p>
         )}
+        {
+          request.requestStatus === "UNDER DELIVERY" && (
+            <p>Order taken up  by {request.riderID.name}</p>
+
+          )
+        }
+        {
+          (request.requestStatus!=="PENDING" && request.requestStatus!=="CANCELLED") &&
+                  <span> Mode of Transport : <strong>{request.modeOfTransport}</strong> </span>
+        }
         <Address />
         <Remarks remarks={request.remarks} />
-        {request.itemsListImages.length > 0 ? (
-          <RequestImages
-            bills={request.billsImageList}
-            items={request.itemsListImages}
-            images={request.rideImages}
-          />
-        ) : (
-          <>
+        {
+            request.itemsListImages.length > 0 ? (
+              <RequestImages
+                bills={request.billsImageList}
+                items={request.itemsListImages}
+                images={request.rideImages}
+              />
+            ) : (
+              <>
             <ItemsRequestedList
               styles={styles}
               list={request.itemsListList}
               category={request.itemCategories}
             />
-            <RequestImages
-              bills={request.billsImageList}
-              images={request.rideImages}
-            />
+            {
+              request.itemsListImages.length > 0 &&
+              <RequestImages
+                bills={request.billsImageList}
+                images={request.rideImages}
+              />
+
+            }
+           
           </>
         )}
 
-       
           <div className={styles.buttonsContainer}>
             
               { request.requestStatus === "PENDING" &&  <button
@@ -105,7 +121,7 @@ const PlacedRequest = () => {
                 Cancel Request
               </button>}
             
-            { (request.requestStatus === "PENDING" || request.requestStatus === "UNDER DELIVERY") && <button
+            { (request.requestStatus === "CONFIRMED BY RIDER") && <button
               onClick={() => {
                 setDialogData({
                   show: true,
@@ -135,7 +151,6 @@ const Address = () => {
   const drop = request.dropLocationAddress;
   const pCoordinates = request.pickupLocationCoordinates.coordinates;
   const dCoordinates = request.dropLocationCoordinates.coordinates;
-
   return (
     <div className={styles.addressContainer}>
       {type === "GENERAL" ? (
@@ -145,13 +160,13 @@ const Address = () => {
             <>
               <span>{drop.address}</span>
               <span>
-                {drop.city} {drop.area}
+              {drop.area} {drop.city} 
               </span>
             </>
           ) : (
             <a
               rel="noreferrer"
-              href={`https://www.google.com/maps/search/?api=1&query=${dCoordinates[0]},${dCoordinates[1]}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${dCoordinates[1]},${dCoordinates[0]}`}
               target="_blank"
             >
               Open in google maps
@@ -174,7 +189,7 @@ const Address = () => {
               ) : (
                 <a
                   rel="noreferrer"
-                  href={`https://www.google.com/maps/search/?api=1&query=${pCoordinates[0]},${pCoordinates[1]}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${pCoordinates[1]},${pCoordinates[0]}`}
                   target="_blank"
                 >
                   Open in google maps
@@ -197,7 +212,7 @@ const Address = () => {
               ) : (
                 <a
                   rel="noreferrer"
-                  href={`https://www.google.com/maps/search/?api=1&query=${dCoordinates[0]},${dCoordinates[1]}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${dCoordinates[1]},${dCoordinates[0]}`}
                   target="_blank"
                 >
                   Open in google maps

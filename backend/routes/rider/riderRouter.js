@@ -39,13 +39,14 @@ router.put("/profile", function (req, res) {
 		})
 })
 
-router.get("/makeDelivery/:requestID", (req, res) => {
+router.get("/makeDelivery/:requestID/:mode", (req, res) => {
 
 	if (!req.params.requestID)
 		res.json(sendError("No request ID mentioned"));
 	else {
-		riderController.makeDelivery(req.user.phoneNumber, req.params.requestID)
+		riderController.makeDelivery(req.user.phoneNumber, req.params.requestID,req.params.mode)
 			.then(response => {
+				console.log(response);
 				res.json(response);
 			})
 			.catch(error => {
@@ -104,8 +105,9 @@ router.get("/myDeliveries", (req, res) => {
 		})
 })
 
-router.get("/showFetchedRequests", (req, res) => {
+router.post("/showFetchedRequests", (req, res) => {
 	const { longitude, latitude, maxDistance } = req.body;
+	console.log(req.body);
 	riderController.fetchRequests(req.user.phoneNumber, longitude, latitude, maxDistance)
 		.then(response => {
 			res.json(response);

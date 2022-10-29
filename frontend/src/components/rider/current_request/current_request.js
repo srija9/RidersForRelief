@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer,  useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth/authProvider";
 import { ConfirmDialog } from "../../global_ui/dialog/dialog";
@@ -54,7 +54,6 @@ export const CurrentRequest = () => {
   const request = state.request;
   const history = useHistory()
   const { token } = useContext(AuthContext);
-
   const [dialogData, setDialogData] = useState({ show: false, msg: "" });
   const [cancel, setCancel] = useState(false);
   const [bills,setBills] = useSessionStorageState('b-images',[])
@@ -68,7 +67,8 @@ export const CurrentRequest = () => {
 
     if(request){
       dispatch({type:'SETLOADING'})
-    }else
+      
+    }
     await fetchCurrentRequest(dispatch, token);
   }, []);
   
@@ -84,17 +84,20 @@ export const CurrentRequest = () => {
         // routeRedirect="/"
         onOK={async () => {
             
+              
+            
           
             const res = await finishRequest(token,cancel)
-            console.log(res);
             if (res !== 1) {
               setDialogData({ ...dialogData, msg: res });
             } else {
               if (cancel)
-                setDialogData({ ...dialogData, msg: "Cancelled successfully" });
+                setDialogData({ ...dialogData, msg: "Cancelled successfully! You will be redirected to home" });
               else
-                setDialogData({ ...dialogData, msg: "Confirmed successfully" });
-              history.replace("/");
+                setDialogData({ ...dialogData, msg: "Confirmed successfully! You will be redirected to home" });
+              setTimeout(() => {
+                history.replace('/')
+              }, 3000);
             }
         }}
       />
@@ -140,10 +143,10 @@ export const CurrentRequest = () => {
         )}
 
         <ImgInput key={'wjhbdwiuybdwb;'} setImages={setBills} imgHeader="Bills" imgText="Tap to add bills" />
-        <PreviewImages setImages= {setBills} title='Selected Bills' imgWidth='80px' images={bills} />
+        <PreviewImages  canDelete setImages= {setBills} title='Selected Bills' imgWidth='80px' images={bills} />
         
         <ImgInput key={'hbdhwbijh'} setImages={setImages} imgHeader="Upload Images" imgText="Tap to add images" />
-        <PreviewImages setImages= {setImages} title="Selected Images" images={images} imgWidth='80px' />
+        <PreviewImages canDelete setImages= {setImages} title="Selected Images" images={images} imgWidth='80px' />
 
         <BottomButtons setCancel={setCancel} setDialogData={setDialogData} />
       </div>

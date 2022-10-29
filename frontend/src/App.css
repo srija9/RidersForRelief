@@ -1,8 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
+@media (min-resolution: 120dpi) {
+  body {
+       zoom:0.82;
+       background-color:var(--tertiary);
+  }
+}
+
 :root{
-  --primary: #79CBC5;
-  --secondary:#ff7978;
+  --primary: #64778d;
+  --secondary:#e25b4b;
+  --tertiary:#ecfdff48;
+  --textColor:white;
   --max-width:400px;
   --almost-transparent:rgba(0, 0, 0, 0.200);
 }
@@ -18,18 +27,19 @@ body {
 }
 button {
   align-self: center;
-  background: green;
+  background: var(--secondary);
   color: white;
-  font-size: 1em;
+  font-size: large;
   border-radius: 4px;
   font-weight: bold;
-  padding: 0.3em 0.7em;
+  padding: 0.7rem 1.25rem;
   cursor: pointer;
-  border-color: green;
   border: none;
   transition: color 0.2s ease;
 }
 button:hover , button:focus{
   outline:none !important;
+  box-shadow: rgba(100, 100, 111, 0.3) 0.5px 5px 6px 0px;
+
 }
 

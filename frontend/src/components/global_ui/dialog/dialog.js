@@ -112,9 +112,7 @@ const ConfirmDialog = ({
             unmountOnExit
             in={inProp}
             onExited={() => {
-              if (!inProp) {
-                
-              
+              if (!inProp) {              
                 setInProp(true);
                 setDialogData({
                   show: false,
@@ -136,7 +134,7 @@ const ConfirmDialog = ({
                   <Spinner radius="2" />
                 </span>
               ) : (
-                <p>{msg}</p>
+                <p style={{marginBottom:'20px'}}>{msg}</p>
               )}
 
               {!loading && (
@@ -164,7 +162,10 @@ const ConfirmDialog = ({
                         setLoading(true);
                         await onOK();
                         onOKCompleted.current = true;
-                        setLoading(false);
+                        // setTimeout(() => {
+                          setLoading(false);
+
+                        // },3000);
                         setMakeAlert(true);
                       }
                     }}
@@ -172,7 +173,8 @@ const ConfirmDialog = ({
                     Okay!
                   </button>
                 </>
-              )}
+              )
+              }
             </div>
           </CSSTransition>
         </div>,
